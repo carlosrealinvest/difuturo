@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seu PDF está pronto | Carlos Maciel</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #cb3e47;
+    --red-dark: #b01d2c;
+    --bg: #f5f3ef;
+    --dark: #1a1a1a;
+    --mid: #4a4a4a;
+    --white: #ffffff;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 12px;
+    max-width: 520px;
+    width: 100%;
+    padding: 56px 48px;
+    text-align: center;
+    box-shadow: 0 8px 48px rgba(0,0,0,0.08);
+    animation: fadeUp 0.6s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .check-circle {
+    width: 72px;
+    height: 72px;
+    background: #f0faf4;
+    border: 2px solid #4caf7d;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 32px;
+    font-size: 32px;
+    animation: popIn 0.5s 0.3s ease both;
+  }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.6); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--dark);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--mid);
+    line-height: 1.7;
+    margin-bottom: 40px;
+  }
+
+  .btn-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--red);
+    color: var(--white);
+    text-decoration: none;
+    padding: 16px 32px;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    transition: background 0.2s, transform 0.15s;
+    margin-bottom: 40px;
+  }
+
+  .btn-download:hover {
+    background: var(--red-dark);
+    transform: translateY(-1px);
+  }
+
+  .btn-icon { font-size: 18px; }
+
+  .divider {
+    height: 1px;
+    background: #eee;
+    margin-bottom: 32px;
+  }
+
+  .next-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 12px;
+  }
+
+  .next-text {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--mid);
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+
+  .instagram-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1.5px solid #ddd;
+    border-radius: 4px;
+    padding: 12px 24px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--dark);
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .instagram-btn:hover {
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  .author-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid #eee;
+  }
+
+  .author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .author-info { text-align: left; line-height: 1.4; }
+  .author-name { font-size: 14px; font-weight: 600; color: var(--dark); }
+  .author-role { font-size: 12px; color: var(--mid); font-weight: 300; }
+
+  @media (max-width: 560px) {
+    .card { padding: 40px 28px; }
+    .title { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <div class="check-circle">✓</div>
+
+  <h1 class="title">Seu PDF está<br>pronto para download</h1>
+  <p class="subtitle">
+    Preparei este material para te ajudar a entender como a alta do DI Futuro afeta sua renda fixa — de forma simples, sem economês.
+  </p>
+
+  <a class="btn-download" href="di-futuro.pdf" download="DI-Futuro-Renda-Fixa-Carlos-Maciel.pdf">
+    <span class="btn-icon">📥</span>
+    Baixar PDF Gratuito
+  </a>
+
+  <div class="divider"></div>
+
+  <p class="next-label">Próximo passo</p>
+  <p class="next-text">
+    Dúvida sobre a sua carteira? Me segue no Instagram — publico conteúdo sobre investimentos toda semana e respondo as perguntas nos comentários.
+  </p>
+
+  <a class="instagram-btn" href="https://instagram.com/carlosmaciel.realinvest" target="_blank">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+      <circle cx="12" cy="12" r="4"/>
+      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+    </svg>
+    @carlosmaciel.realinvest
+  </a>
+
+  <div class="author-row">
+    <div class="author-avatar">CM</div>
+    <div class="author-info">
+      <div class="author-name">Carlos Maciel</div>
+      <div class="author-role">Assessor de Investimentos · Real Invest | XP</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

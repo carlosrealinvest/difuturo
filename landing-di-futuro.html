@@ -878,13 +878,7 @@
       });
 
       if (res.ok) {
-        if (source === 'hero') {
-          document.getElementById('heroForm').style.display = 'none';
-          document.getElementById('heroSuccess').classList.add('show');
-        } else {
-          document.getElementById('ctaForm').style.display = 'none';
-          document.getElementById('ctaSuccess').classList.add('show');
-        }
+        window.location.href = 'obrigado.html';
       } else {
         throw new Error('Erro no envio');
       }
