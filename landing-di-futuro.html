@@ -852,24 +852,47 @@
 </footer>
 
 <script>
-  function handleSubmit(source) {
+  const FORMSPREE = 'https://formspree.io/f/mlgkdbbb';
+
+  async function handleSubmit(source) {
     const input = document.getElementById(source === 'hero' ? 'heroInput' : 'ctaInput');
-    const val = input.value.trim();
+    const btn   = input.closest('.form-row, .cta-form-row').querySelector('button');
+    const val   = input.value.trim();
+
     if (!val) {
       input.style.outline = '2px solid #cb3e47';
       setTimeout(() => input.style.outline = '', 1500);
       return;
     }
 
-    // Aqui você conecta com seu backend, webhook ou planilha
-    // Exemplo: fetch('/api/lead', { method: 'POST', body: JSON.stringify({ contact: val }) })
+    // Feedback visual de carregamento
+    const originalText = btn.textContent;
+    btn.textContent = 'Enviando...';
+    btn.disabled = true;
 
-    if (source === 'hero') {
-      document.getElementById('heroForm').style.display = 'none';
-      document.getElementById('heroSuccess').classList.add('show');
-    } else {
-      document.getElementById('ctaForm').style.display = 'none';
-      document.getElementById('ctaSuccess').classList.add('show');
+    try {
+      const res = await fetch(FORMSPREE, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ contato: val, origem: source === 'hero' ? 'Hero' : 'CTA Final' })
+      });
+
+      if (res.ok) {
+        if (source === 'hero') {
+          document.getElementById('heroForm').style.display = 'none';
+          document.getElementById('heroSuccess').classList.add('show');
+        } else {
+          document.getElementById('ctaForm').style.display = 'none';
+          document.getElementById('ctaSuccess').classList.add('show');
+        }
+      } else {
+        throw new Error('Erro no envio');
+      }
+    } catch (e) {
+      btn.textContent = originalText;
+      btn.disabled = false;
+      input.style.outline = '2px solid #cb3e47';
+      alert('Erro ao enviar. Tente novamente ou entre em contato pelo Instagram @carlosmaciel.realinvest');
     }
   }
 
