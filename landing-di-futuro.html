@@ -854,15 +854,83 @@
 <script>
   const FORMSPREE = 'https://formspree.io/f/mlgkdbbb';
 
+  // ── Máscara de telefone ──
+  function applyPhoneMask(val) {
+    let d = val.replace(/\D/g, '').slice(0, 11);
+    if (d.length === 0) return '';
+    if (d.length <= 2)  return '(' + d;
+    if (d.length <= 7)  return '(' + d.slice(0,2) + ') ' + d.slice(2);
+    if (d.length <= 10) return '(' + d.slice(0,2) + ') ' + d.slice(2,6) + '-' + d.slice(6);
+    return '(' + d.slice(0,2) + ') ' + d.slice(2,7) + '-' + d.slice(7);
+  }
+
+  function isPhone(val) {
+    return /^\(\d{2}\) \d{4,5}-\d{4}$/.test(val);
+  }
+
+  function isEmail(val) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+  }
+
+  function showError(input, msg) {
+    input.style.outline = '2px solid #cb3e47';
+    let err = input.parentElement.querySelector('.input-error');
+    if (!err) {
+      err = document.createElement('p');
+      err.className = 'input-error';
+      err.style.cssText = 'font-size:12px;color:#cb3e47;margin-top:6px;';
+      input.parentElement.after(err);
+    }
+    err.textContent = msg;
+    setTimeout(() => {
+      input.style.outline = '';
+      if (err) err.textContent = '';
+    }, 3000);
+  }
+
+  // Aplica máscara em tempo real enquanto digita
+  function setupMask(inputId) {
+    const input = document.getElementById(inputId);
+    input.addEventListener('input', () => {
+      const val = input.value;
+      const digits = val.replace(/\D/g, '');
+      // Se começa com dígito, assume telefone e aplica máscara
+      if (digits.length > 0 && !val.includes('@')) {
+        input.value = applyPhoneMask(val);
+      }
+    });
+  }
+
+  setupMask('heroInput');
+  setupMask('ctaInput');
+
+  // ── Validação e envio ──
   async function handleSubmit(source) {
     const input = document.getElementById(source === 'hero' ? 'heroInput' : 'ctaInput');
     const btn   = input.closest('.form-row, .cta-form-row').querySelector('button');
     const val   = input.value.trim();
 
+    // Campo vazio
     if (!val) {
-      input.style.outline = '2px solid #cb3e47';
-      setTimeout(() => input.style.outline = '', 1500);
+      showError(input, 'Preencha seu WhatsApp ou e-mail.');
       return;
+    }
+
+    // Detecta tipo e valida
+    const hasAt = val.includes('@');
+    if (hasAt) {
+      if (!isEmail(val)) {
+        showError(input, 'E-mail inválido. Verifique se digitou corretamente.');
+        return;
+      }
+    } else {
+      const digits = val.replace(/\D/g, '');
+      if (digits.length < 10) {
+        showError(input, 'WhatsApp inválido. Use o formato (XX) XXXXX-XXXX.');
+        return;
+      }
+      // Garante que a máscara está aplicada
+      input.value = applyPhoneMask(val);
     }
 
     // Feedback visual de carregamento
@@ -874,7 +942,11 @@
       const res = await fetch(FORMSPREE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ contato: val, origem: source === 'hero' ? 'Hero' : 'CTA Final' })
+        body: JSON.stringify({
+          contato: input.value.trim(),
+          tipo: hasAt ? 'E-mail' : 'WhatsApp',
+          origem: source === 'hero' ? 'Hero' : 'CTA Final'
+        })
       });
 
       if (res.ok) {
